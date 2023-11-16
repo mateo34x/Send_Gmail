@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Objects;
+
 @RunWith(RobolectricTestRunner.class)
 public class MainActivityTest {
 
@@ -34,10 +36,7 @@ public class MainActivityTest {
             scenario.onActivity(activity -> {
                 ImageView imageView = activity.findViewById(R.id.img_screen);
                 assertThat(imageView.getDrawable() != null &&
-                        imageView.getDrawable().getConstantState()
-                                .equals(
-                                        activity.getResources().getDrawable(R.drawable.share_image, activity.getTheme()).getConstantState()
-                                )
+                        Objects.equals(imageView.getDrawable().getConstantState(), activity.getResources().getDrawable(R.drawable.share_image, activity.getTheme()).getConstantState())
                 ).isEqualTo(true);
             });
         } catch (Exception e) {
@@ -135,5 +134,20 @@ public class MainActivityTest {
             e.printStackTrace();
         }
     }
+
+
+    @Test
+    public void Check_Data_Get_SuccessFully(){
+        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)){
+            scenario.onActivity(activity -> {
+               Intent checkdata = activity.updateImageTest();
+               assertThat(checkdata.getAction()!= null && checkdata.getAction().equals(Intent.ACTION_PICK)).isEqualTo(true);
+            });
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
